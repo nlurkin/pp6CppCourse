@@ -58,6 +58,22 @@ bool quadSolve(float (&x)[2], float a, float b, float c){
 	return true;
 }
 
+bool magVector3(float &mag, float a, float b, float c){
+	mag = sqrt(a*a+b*b+c*c);
+	return true;
+}
+
+bool magVector4(float &mag, float a, float b, float c, float d){
+	float mag2;
+	mag2 = a*a - b*b - c*c - d*d;
+	if(mag2<0){
+		std::cout << "Unable to compute 4-vector magnitude. Mag^2 is negative." << std::endl;
+		return false;
+	}
+	mag = sqrt(mag2);
+	return true;
+}
+
 bool inputNumber(float &number){
 	std::cin >> number;
    if(!std::cin){
@@ -73,7 +89,7 @@ int main(){
 	   multiline comment */
 	
 	float a,b,c;
-	float x[2],y[2];
+	float x[2], y[2];
 	float result;
 	std::string op;
 	bool printArray;
@@ -87,7 +103,7 @@ int main(){
 		}
 		printArray = false;
 
-		std::cout << "Please enter an operation (/,*,+,-,intercept,quadsolve,q):" << std::endl;
+		std::cout << "Please enter an operation (/,*,+,-,4intercept,3quadsolve,3vecmag,4vecmag,q):" << std::endl;
 		std::cin >> op;
 		if(!std::cin){
 			std::cout << "There is an error with the operation you entered" << std::endl;
@@ -118,23 +134,33 @@ int main(){
 				continue;
 			}
 		}
-		else if(op.compare("quadsolve")==0){
+		else if(op[0]=='3'){
 			std::cout << "Please enter three numbers (a,b,c):" << std::endl;
 			if(!inputNumber(a)) continue;
 			if(!inputNumber(b)) continue;
 			if(!inputNumber(c)) continue;
 
-			if(!quadSolve(x, a, b, c)) continue;
-			printArray = true;
+			if(op.compare("3quadsolve")==0){
+				if(!quadSolve(x, a, b, c)) continue;
+				printArray = true;
+			}
+			else if(op.compare("3vecmag")==0){
+				if(!magVector3(result, a, b, c)) continue;
+			}
 		}
-		else if(op.compare("intercept")==0){
+		else if(op[0]=='4'){
 			std::cout << "Please enter four numbers (x1,y1,x2,y2):" << std::endl;
 			if(!inputNumber(x[0])) continue;
 			if(!inputNumber(y[0])) continue;
 			if(!inputNumber(x[1])) continue;
 			if(!inputNumber(y[1])) continue;
-
-			if(!intercept(result, x, y)) continue;
+		
+			if(op.compare("4intercept")==0){
+				if(!intercept(result, x, y)) continue;
+			}
+			else if(op.compare("4vecmag")==0){
+				if(!magVector4(result, x[0],y[0],x[1],y[1])) continue;
+			}
 		}
 		else{
 			std::cout << "Unknown operation " << op << std::endl;
