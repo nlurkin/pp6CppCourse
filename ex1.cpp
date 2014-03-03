@@ -1,14 +1,35 @@
 #include <iostream>
 #include <limits>
 
+bool mul(float &c, float a, float b){
+	c = a*b;
+	return true;
+}
+bool div(float &c, float a, float b){
+	if(b==0){
+		std::cout << "Error division by 0" << std::endl;
+		return false;
+	}
+	c = a/b;
+	return true;
+}
+bool plus(float &c, float a, float b){
+	c = a+b;
+	return true;
+}
+bool minus(float &c, float a, float b){
+	c = a-b;
+	return true;
+}
+
 int main(){
 	// This is a comment
 	/* This is 
 	   multiline comment */
 	
-	double a,b,c;
+	float a,b,c;
 	char op;
-	double quit;
+	bool quit;
 
 	quit = false;
 	while(!quit){
@@ -21,44 +42,40 @@ int main(){
 		std::cout << "Please enter two numbers:" << std::endl;
 		std::cin >> a;
 		if(!std::cin){
-			std::cout << "There was an error" << std::endl;
+			std::cout << "There is a problem with your input" << std::endl;
 			continue;
 		}
 		std::cin >> b;
 		if(!std::cin){
-			std::cout << "There was an error" << std::endl;
+			std::cout << "There is a problem with your input" << std::endl;
 			continue;
 		}
 
-		std::cout << "Please enter operation:" << std::endl;
+		std::cout << "Please enter operation (/,*,+,-,q):" << std::endl;
 		std::cin >> op;
 		if(!std::cin){
-			std::cout << "There was an error" << std::endl;
+			std::cout << "There is an error with the operation you entered" << std::endl;
 			continue;
 		}
 
 		switch(op){
 		case '/':
-			if(b==0){
-				std::cout << "Error division by 0" << std::endl;
-				continue;
-			}
-			c = a/b;
+			if(!div(c,a,b)) continue;
 			break;
 		case '*':
-			c = a*b;
+			if(!mul(c,a,b)) continue;
 			break;
 		case '+':
-			c = a+b;
+			if(!plus(c,a,b)) continue;
 			break;
 		case '-':
-			c = a-b;
+			if(!minus(c,a,b)) continue;
 			break;
 		case 'q':
 			quit=true;
 			continue;
 		default:
-			std::cout << "Uknown operation " << op << std::endl;
+			std::cout << "Unknown operation " << op << std::endl;
 			continue;
 		}
 	
