@@ -2,6 +2,7 @@
 #include <string>
 
 #include "day1.hpp"
+#include "day2.hpp"
 #include "pp6menu.hpp"
 
 
@@ -18,6 +19,9 @@ int main(){
 		switch(selection){
 		case 1:
 			if(executeday1()) return 0;
+			break;
+		case 2:
+			if(executeday2()) return 0;
 			break;
 		case -2:
 			return true;

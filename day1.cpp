@@ -4,10 +4,11 @@
  *  Created on: 10 Mar 2014
  *      Author: ncl
  */
+#include <iostream>
 
 #include "pp6menu.hpp"
-#include <iostream>
 #include "PP6Math.hpp"
+#include "day1.hpp"
 
 static const int nd1Menu = 9;
 static const std::string d1Menu[nd1Menu] = {

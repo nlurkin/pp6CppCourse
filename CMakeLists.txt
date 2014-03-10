@@ -9,7 +9,7 @@ endif()
 include_directories(PP6Lib)
 
 add_subdirectory(PP6Lib)
-add_executable(pp6calculator pp6calculator.cpp pp6menu.cpp day1.cpp)
+add_executable(pp6calculator pp6calculator.cpp pp6menu.cpp day1.cpp day2.cpp)
 
 target_link_libraries(pp6calculator pp6lib)
 

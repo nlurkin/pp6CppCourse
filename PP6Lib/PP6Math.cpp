@@ -1,6 +1,7 @@
 #include <cmath>
 #include "PP6Math.hpp"
 #include <iostream>
+#include <cstdlib>
 
 /**
  * Multiply function (c=a*b)
@@ -20,7 +21,7 @@ bool mul(float &c, float a, float b){
  * Return: true if no error happened (division by 0)
  */
 bool div(float &c, float a, float b){
-	if(b==0){
+	if(b==0.0){
 		std::cout << "Error division by 0" << std::endl;
 		return false;
 	}
@@ -57,8 +58,12 @@ bool sub(float &c, float a, float b){
  */
 bool intercept(float &i, float x1, float y1, float x2, float y2){
 	float m,p;
-	if((y2-y1)==0){
+	if(isEq(y2-y1,0)){
 		std::cout << "Unable to compute intercept with x. Line is parallel to x axis." << std::endl;
+		return false;
+	}
+	if((x2-x1)==0.0){
+		std::cout << "Unable to compute intercept with x. Division by 0." << std::endl;
 		return false;
 	}
 	m = (y2-y1)/(x2-x1);
@@ -82,7 +87,7 @@ bool quadSolve(float (&x)[2], float a, float b, float c){
 		x[1] = 0;
 		return false;
 	}
-	else if(delta==0){
+	else if(isEq(delta,0)){
 		x[0] = -b/(2*a);
 		x[1] = 0;
 	}
@@ -104,6 +109,16 @@ bool magVector3(float &mag, float a, float b, float c){
 	return true;
 }
 
+/**
+* Magnitude of a 3-vector |v|
+* Params: mag: magnitude of the 3-vector
+*         a,b,c: elements of the 3-vector
+* Return: true if no error happened
+*/
+bool magVector3(double &mag, double a, double b, double c){
+	mag = sqrt(a*a+b*b+c*c);
+	return true;
+}
 /**
  * Magnitude of a 4-vector |v|
  * Params: mag: magnitude of the 4-vector
@@ -177,3 +192,97 @@ bool bubbleSort(int size, double* arr){
 	return true;
 }
 
+/**
+ * Bubble sort algorithm. Fill indArr with the original indices of the elements.
+ * Params: size: Number of elements in the array
+ *         arr: reference to array to sort
+ *         indArr: reference to array of the same size as arr
+ * Return: true if no error happened
+ */
+bool bubbleSortIndex(int size, double* arr, double *indArr){
+	int count = -1;
+
+	//Initialize index array
+	for(int i=0; i<size-1; ++i){
+		indArr[i] = i;
+	}
+
+	while(count!=0){
+		count = 0;
+		for(int i=0; i<size-1; ++i){
+			if(arr[i]<arr[i+1]){
+				swap(arr[i],arr[i+1]);
+				swap(indArr[i],indArr[i+1]);
+				++count;
+			}
+		}
+	}
+	return true;
+}
+
+bool isEq(float a, float b){
+	float epsilon = 10e-8;
+	return (fabsf(a-b) < fabsf(b)*epsilon);
+}
+
+bool isEq(double a, double b){
+	float epsilon = 10e-8;
+	return (fabs(a-b) < fabs(b)*epsilon);
+}
+
+bool flat(double& rnd, double min, double max) {
+	rnd = (rand()/(double)RAND_MAX)*(max-min) + min;
+	return true;
+}
+
+bool normal(double &rnd) {
+	double v1,v2,s;
+
+	do{
+		flat(v1,-1,1);
+		flat(v2,-1,1);
+
+		s = v1*v1 + v2*v2;
+	} while(s>= 1.0);
+
+	if(isEq(s,0.0)) rnd = 0.0;
+	else rnd = (v1*sqrt(-2.0*log(s)/s));
+	return true;
+}
+
+bool gauss(double &rnd, double mu, double sigma) {
+	normal(rnd);
+	rnd = mu + sigma*rnd;
+	return true;
+}
+
+bool generateEvent(double *vMass, double *vPx, double *vPy, double *vPz, double *vE,double mass, double sigma) {
+	double rMass;
+	double px,py,pz;
+	double energy;
+	double pmag,dxdz,dydz;
+	double unitLength;
+
+	for(int i=0; i<100; ++i){
+		gauss(rMass, mass, sigma);
+
+		flat(pmag, 3,75);
+		flat(dxdz, 0, 0.5);
+		flat(dydz, 0, 0.5);
+		magVector3(unitLength, dxdz, dydz, 1.0);
+
+		px = dxdz*(pmag/unitLength);
+		py = dydz*(pmag/unitLength);
+		pz = pmag/unitLength;
+
+		energy = sqrt(rMass*rMass + pmag*pmag);
+
+		vMass[i] = rMass;
+		vPx[i] = px;
+		vPy[i] = py;
+		vPz[i] = pz;
+		vE[i] = energy;
+	}
+
+	return true;
+}
