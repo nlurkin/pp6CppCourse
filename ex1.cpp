@@ -147,6 +147,38 @@ bool invMass(float &mass, float m1, float m2, float p1[3], float p2[3]){
 }
 
 /**
+ * Swap two numbers
+ * Params: a,b: numbers to swap
+ * Return: true if no error happened
+ */
+bool swap(double& a, double& b){
+	double c = a;
+	a = b;
+	b = c;
+	return true;
+}
+
+/**
+ * Bubble sort algorithm
+ * Params: size: Number of elements in the array
+ *         arr: reference to array to sort
+ * Return: true if no error happened
+ */
+bool bubbleSort(int size, double* arr){
+	int count = -1;
+	while(count!=0){
+		count = 0;
+		for(int i=0; i<size-1; ++i){
+			if(arr[i]<arr[i+1]){
+				swap(arr[i],arr[i+1]);
+				++count;
+			}
+		}
+	}
+	return true;
+}
+
+/**
  * Wait for a number in cin. Print an error message if the input is not a number.
  * Params: number
  * Return: true if input can be parsed as float
@@ -181,7 +213,7 @@ int main(){
 		}
 		printArray = false;
 
-		std::cout << "Please enter an operation (/,*,+,-,4intercept,3quadsolve,3vecmag,4vecmag,invmass,q):" << std::endl;
+		std::cout << "Please enter an operation (/,*,+,-,4intercept,3quadsolve,3vecmag,4vecmag,invmass,test,q):" << std::endl;
 		std::cin >> op;
 		if(!std::cin){
 			std::cout << "There is an error with the operation you entered" << std::endl;
@@ -255,6 +287,15 @@ int main(){
 			if(!inputNumber(v3bis[2])) continue;
 
 			if(!invMass(result, v2[0], v2[1], v3, v3bis)) continue;
+		}
+		else if(op.compare("test")==0){
+			double arr[6] = {5.2,10.3,4.7,8,6,5.21};
+			bubbleSort(6, arr);
+			for(int i=0; i<6;++i){
+				std::cout << arr[i] << ",";
+			}
+			std::cout << std::endl;
+			continue;
 		}
 		else{	// User introduced rubish
 			std::cout << "Unknown operation " << op << std::endl;
