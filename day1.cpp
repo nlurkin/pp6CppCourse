@@ -10,6 +10,7 @@
 #include "PP6Math.hpp"
 #include "day1.hpp"
 
+// Module menu definition
 static const int nd1Menu = 9;
 static const std::string d1Menu[nd1Menu] = {
 		"1) /","2) *","3) +","4) -","5) Quadratic equation solver",
@@ -22,7 +23,7 @@ bool executeday1(){
 	float v2[2];				//2 input values
 	float v3[3],v3bis[3];		//3 input values
 	float v4[4];				//4 input values
-	float result, result2[2];	//1 or 2 output values
+	float result, result2;		//output values
 
 	int selection;				//Storing the operation chosen by user
 	bool printArray;			//Is the result an array or a single value
@@ -30,9 +31,10 @@ bool executeday1(){
 	while(true){ //Infinite loop. Exit when user inputs 'q'
 		printArray = false;
 
+		//Print the menu and wot for user input
 		if(!printAndRequestTopMenu("Day 1 Menu: ", d1Menu, nd1Menu, true, selection)) continue;
 
-
+		//How many input are we asking to the user
 		if(selection<0){}
 		else if(selection<=4){	// Simple operators with two operands (+-*/)
 			std::cout << "Please enter two numbers:" << std::endl;
@@ -70,6 +72,7 @@ bool executeday1(){
 			continue;
 		}
 
+		// Choose the right operation
 		switch(selection){
 		case 1:
 			if(!div(result,v2[0],v2[1])) continue;
@@ -84,7 +87,7 @@ bool executeday1(){
 			if(!sub(result,v2[0],v2[1])) continue;
 			break;
 		case 5:
-			if(!quadSolve(result2, v3[0], v3[1], v3[2])) continue;
+			if(!quadSolve(result, result2, v3[0], v3[1], v3[2])) continue;
 			printArray = true;
 			break;
 		case 6:
@@ -113,7 +116,7 @@ bool executeday1(){
 
 		//Print the result
 		if(printArray){
-			std::cout << "The result is " << result2[0] << "," << result2[1] << std::endl;
+			std::cout << "The result is " << result << "," << result2 << std::endl;
 		}
 		else{
 			std::cout << "The result is " << result << std::endl;

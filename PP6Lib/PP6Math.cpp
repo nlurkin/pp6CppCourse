@@ -78,22 +78,24 @@ bool intercept(float &i, float x1, float y1, float x2, float y2){
  *         a,b,c: the coefficients of the equation: ax^2+bx+c=0
  * Return: true if no error happened (no solution to the equation)
  */
-bool quadSolve(float (&x)[2], float a, float b, float c){
+bool quadSolve(float &x1, float &x2, float a, float b, float c){
 	float delta;
 	delta = b*b-4*a*c;
+
+	//0,1 or 2 solutions?
 	if(delta<0){
 		std::cout << "Unable to solve quadratic equation. Delta<0." << std::endl;
-		x[0] = 0;
-		x[1] = 0;
+		x1 = 0;
+		x2 = 0;
 		return false;
 	}
 	else if(isEq(delta,0)){
-		x[0] = -b/(2*a);
-		x[1] = 0;
+		x1 = -b/(2*a);
+		x2 = 0;
 	}
 	else{
-		x[0] = (-b+sqrt(delta))/(2*a);
-		x[1] = (-b-sqrt(delta))/(2*a);
+		x1 = (-b+sqrt(delta))/(2*a);
+		x2 = (-b-sqrt(delta))/(2*a);
 	}
 	return true;
 }
@@ -110,11 +112,11 @@ bool magVector3(float &mag, float a, float b, float c){
 }
 
 /**
-* Magnitude of a 3-vector |v|
-* Params: mag: magnitude of the 3-vector
-*         a,b,c: elements of the 3-vector
-* Return: true if no error happened
-*/
+ * Magnitude of a 3-vector |v|
+ * Params: mag: magnitude of the 3-vector
+ *         a,b,c: elements of the 3-vector
+ * Return: true if no error happened
+ */
 bool magVector3(double &mag, double a, double b, double c){
 	mag = sqrt(a*a+b*b+c*c);
 	return true;
@@ -147,16 +149,62 @@ bool invMass(float &mass, float m1, float m2, float p1[3], float p2[3]){
 	float E1,E2;
 	float p1Mag,p2Mag;
 	float dotProduct;
+	float msq;
 
+	mass = 0.0;
+	//Compute momenta magnitude
 	if(!magVector3(p1Mag,p1[0],p1[1],p1[2]) || !magVector3(p2Mag,p2[0],p2[1],p2[2])){
 		std::cout << "Invalid momenta magnitude." << std::endl;
 		return false;
 	}
 
+	//Compute particle energies (m^2 - |p|^2)
 	E1 = sqrt(m1*m1 + p1Mag*p1Mag);
 	E2 = sqrt(m2*m2 + p2Mag*p2Mag);
+	//Compute dot product p1.p2
 	dotProduct = sqrt(p1[0]*p2[0] + p1[1]*p2[1] + p1[2]*p2[2]);
-	mass = sqrt(m1*m1 + m2*m2 + 2*(E1*E2 - dotProduct));
+	//Compute m^2 and check that it is >0
+	msq = m1*m1 + m2*m2 + 2*(E1*E2 - dotProduct);
+	if(msq<0){
+		std::cout << "[error] Invariant mass squared is negative." << std::endl;
+		return false;
+	}
+	mass = sqrt(msq);
+	return true;
+}
+
+/**
+ * Invariant mass of two particles
+ * Params: mass: invariant mass
+ *         m1,m2: masses of the two particles
+ *         p1,p2: 3-momenta of the two particles
+ * Return: true if no error happened
+ */
+bool invMass(double &mass, double m1, double m2, double p1[3], double p2[3]){
+	double E1,E2;
+	double p1Mag,p2Mag;
+	double dotProduct;
+	double msq;
+
+	mass = 0.0;
+	//Compute momenta magnitude
+	if(!magVector3(p1Mag,p1[0],p1[1],p1[2]) || !magVector3(p2Mag,p2[0],p2[1],p2[2])){
+		std::cout << "Invalid momenta magnitude." << std::endl;
+		return false;
+	}
+
+	//Compute particle energies (m^2 - |p|^2)
+	E1 = sqrt(m1*m1 + p1Mag*p1Mag);
+	E2 = sqrt(m2*m2 + p2Mag*p2Mag);
+	//Compute dot product p1.p2
+	dotProduct = sqrt(p1[0]*p2[0] + p1[1]*p2[1] + p1[2]*p2[2]);
+	//Compute m^2 and check that it is >0
+	msq = m1*m1 + m2*m2 + 2*(E1*E2 - dotProduct);
+	if(msq<0){
+		std::cout << "[error] Invariant mass squared is negative." << std::endl;
+		return false;
+	}
+	mass = sqrt(msq);
 	return true;
 }
 
@@ -173,14 +221,26 @@ bool swap(double& a, double& b){
 }
 
 /**
+ * Swap two numbers
+ * Params: a,b: numbers to swap
+ * Return: true if no error happened
+ */
+bool swap(int& a, int& b){
+	int c = a;
+	a = b;
+	b = c;
+	return true;
+}
+
+/**
  * Bubble sort algorithm
  * Params: size: Number of elements in the array
  *         arr: reference to array to sort
  * Return: true if no error happened
  */
-bool bubbleSort(int size, double* arr){
+bool bubbleSort(int size, double *arr){
 	int count = -1;
-	while(count!=0){
+	while(count!=0){	//Loop until number of swap == 0
 		count = 0;
 		for(int i=0; i<size-1; ++i){
 			if(arr[i]<arr[i+1]){
@@ -199,7 +259,7 @@ bool bubbleSort(int size, double* arr){
  *         indArr: reference to array of the same size as arr
  * Return: true if no error happened
  */
-bool bubbleSortIndex(int size, double* arr, double *indArr){
+bool bubbleSortIndex(int size, double *arr, int *indArr){
 	int count = -1;
 
 	//Initialize index array
@@ -207,7 +267,7 @@ bool bubbleSortIndex(int size, double* arr, double *indArr){
 		indArr[i] = i;
 	}
 
-	while(count!=0){
+	while(count!=0){	//Loop until number of swap == 0
 		count = 0;
 		for(int i=0; i<size-1; ++i){
 			if(arr[i]<arr[i+1]){
@@ -220,21 +280,41 @@ bool bubbleSortIndex(int size, double* arr, double *indArr){
 	return true;
 }
 
+/**
+ * Floating point numbers comparison
+ * Params: a,b: floats to compare
+ * Return: true if can be considered equals
+ */
 bool isEq(float a, float b){
 	float epsilon = 10e-8;
 	return (fabsf(a-b) < fabsf(b)*epsilon);
 }
 
+/**
+ * Floating point numbers comparison
+ * Params: a,b: floats to compare
+ * Return: true if can be considered equals
+ */
 bool isEq(double a, double b){
 	float epsilon = 10e-8;
 	return (fabs(a-b) < fabs(b)*epsilon);
 }
 
+/**
+ * Generate a flat distribution between min and max.
+ * Params: rnd: random number following the distribution
+ *         min: minimum of the flat distribution
+ *         max: maximum of the flat distribution
+ */
 bool flat(double& rnd, double min, double max) {
 	rnd = (rand()/(double)RAND_MAX)*(max-min) + min;
 	return true;
 }
 
+/**
+ * Generate a normal distribution.
+ * Params: rnd: random number following the distribution
+ */
 bool normal(double &rnd) {
 	double v1,v2,s;
 
@@ -250,13 +330,30 @@ bool normal(double &rnd) {
 	return true;
 }
 
+/**
+ * Generate a gaussian distribution.
+ * Params: rnd: random number following the distribution
+ *         mu: mean of the distribution
+ *         sigma: sigma of the distribution
+ */
 bool gauss(double &rnd, double mu, double sigma) {
 	normal(rnd);
 	rnd = mu + sigma*rnd;
 	return true;
 }
 
-bool generateEvent(double *vMass, double *vPx, double *vPy, double *vPz, double *vE,double mass, double sigma) {
+/**
+ * Generate 100 random events with particle mass being a gauss(mass,sigma).
+ * The momenta magnitude is a flat distribution between 3 and 75 GeV/c^2.
+ * The particle momenta is along z with dxdz and dydz slopes between 0 and 0.5.
+ * Params: vMass: array of particle masses
+ *         vP: array of momenta (3 components)
+ *         vE: array of energies
+ *         mass: mean mass of the generated particles
+ *         sigma: standard deviation of the generated particle mass
+ * Return: true if no error occured
+ */
+bool generateEvent(double (&vMass)[100], double (&vP)[100][3], double (&vE)[100],double mass, double sigma) {
 	double rMass;
 	double px,py,pz;
 	double energy;
@@ -278,9 +375,9 @@ bool generateEvent(double *vMass, double *vPx, double *vPy, double *vPz, double 
 		energy = sqrt(rMass*rMass + pmag*pmag);
 
 		vMass[i] = rMass;
-		vPx[i] = px;
-		vPy[i] = py;
-		vPz[i] = pz;
+		vP[i][0] = px;
+		vP[i][1] = py;
+		vP[i][2] = pz;
 		vE[i] = energy;
 	}
 
