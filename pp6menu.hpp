@@ -2,11 +2,11 @@
 #define PP6CALCULATOR_PP6MENU_HH
 
 #include <string>
-#include "quadVector.hpp"
+#include "FourVector.hpp"
 
 bool printAndRequestTopMenu(const std::string menuTitle, const std::string menu[], const int size, bool isSubMenu, int& select);
 bool inputNumber(float &number);
 bool inputNumber(double &number);
-bool inputQuadVector(QuadVector &v);
+bool inputFourVector(FourVector &v);
 
 #endif

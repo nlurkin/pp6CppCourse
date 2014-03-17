@@ -1,7 +1,6 @@
 #ifndef PP6CALCULATOR_PP6MATH_HH
 #define PP6CALCULATOR_PP6MATH_HH
 #include <iostream>
-#include "quadVector.hpp"
 
 bool mul(float &c, float a, float b);
 bool div(float &c, float a, float b);

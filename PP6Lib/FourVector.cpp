@@ -1,13 +1,13 @@
-#include "quadVector.hpp"
+#include "FourVector.hpp"
 #include <math.h>
 
-QuadVector::QuadVector(double x, double y, double z, double t):
+FourVector::FourVector(double x, double y, double z, double t):
 fX(x),fY(y),fZ(z),fT(t)
 {
 	computeLength();
 }
 
-void QuadVector::setXYZT(double x, double y, double z, double t){
+void FourVector::setXYZT(double x, double y, double z, double t){
 	fX = x;
 	fY = y;
 	fZ = z;
@@ -16,7 +16,7 @@ void QuadVector::setXYZT(double x, double y, double z, double t){
 	computeLength();
 }
 
-void QuadVector::boostZ(double v){
+void FourVector::boostZ(double v){
 	double beta = v/celerity;
 	double gamma = 1./sqrt(1.-beta*beta);
 	double ct = fT;
@@ -24,35 +24,35 @@ void QuadVector::boostZ(double v){
 	fZ = gamma*(fZ-beta*ct);
 }
 
-void QuadVector::computeLength(){
+void FourVector::computeLength(){
 	double lSquare = fT*fT - fX*fX - fY*fY - fZ*fZ;
 	if(lSquare<0) fLength = -sqrt(-lSquare);
 	else fLength = sqrt(lSquare);
 }
 
-QuadVector::CausalType QuadVector::getType() const{
+FourVector::CausalType FourVector::getType() const{
 	if(fLength<0) return kSPACELIKE;
 	if(fLength>0) return kTIMELIKE;
 	else return kNULL;
 }
 
-double QuadVector::getT() const{
+double FourVector::getT() const{
 	return fT/celerity;
 }
 
-std::ostream& operator<<(std::ostream& stream, const QuadVector& v){
+std::ostream& operator<<(std::ostream& stream, const FourVector& v){
 	stream << "(" << v.getT() << "," << v.getX() << "," << v.getY() << "," << v.getZ() << ")";
 	return stream;
 }
 
-std::istream& operator>>(std::istream& stream, QuadVector& v){
+std::istream& operator>>(std::istream& stream, FourVector& v){
 	double x,y,z,t;
 	stream >> x >> y >> z >> t;
 	v.setXYZT(x,y,z,t);
 	return stream;
 }
 
-QuadVector& QuadVector::operator+=(const QuadVector& rhs){
+FourVector& FourVector::operator+=(const FourVector& rhs){
 	fX+= rhs.fX;
 	fY+= rhs.fY;
 	fZ+= rhs.fZ;
@@ -62,7 +62,7 @@ QuadVector& QuadVector::operator+=(const QuadVector& rhs){
 	return *this;
 }
 
-QuadVector& QuadVector::operator-=(const QuadVector& rhs){
+FourVector& FourVector::operator-=(const FourVector& rhs){
 	fX-= rhs.fX;
 	fY-= rhs.fY;
 	fZ-= rhs.fZ;
@@ -72,7 +72,7 @@ QuadVector& QuadVector::operator-=(const QuadVector& rhs){
 	return *this;
 }
 
-QuadVector& QuadVector::operator=(const QuadVector& rhs){
+FourVector& FourVector::operator=(const FourVector& rhs){
 	if(&rhs==this) return *this;
 	fX = rhs.fX;
 	fY = rhs.fY;
@@ -82,14 +82,14 @@ QuadVector& QuadVector::operator=(const QuadVector& rhs){
 	return *this;
 }
 
-QuadVector operator+(const QuadVector& lhs, const QuadVector& rhs){
-	QuadVector r(lhs);
+FourVector operator+(const FourVector& lhs, const FourVector& rhs){
+	FourVector r(lhs);
 	r+= rhs;
 	return r;
 }
 
-QuadVector operator-(const QuadVector& lhs, const QuadVector& rhs){
-	QuadVector r(lhs);
+FourVector operator-(const FourVector& lhs, const FourVector& rhs){
+	FourVector r(lhs);
 	r-= rhs;
 	return r;
 }

@@ -12,7 +12,7 @@
 #include "pp6menu.hpp"
 #include "PP6Math.hpp"
 #include "FileReader.hpp"
-#include "quadVector.hpp"
+#include "FourVector.hpp"
 
 // Module menu definition
 static const int nd3Menu = 2;
@@ -22,7 +22,7 @@ const double celerity = 3e8;
 
 bool executeday3(){
 	double vz;
-	QuadVector vec;
+	FourVector vec;
 	int selection;
 
 	while(true){ //Infinite loop. Exit when user inputs 'q'
@@ -35,11 +35,11 @@ bool executeday3(){
 		if(selection<0){}
 		else if(selection==1){
 			std::cout << "Please enter four numbers:" << std::endl;
-			if(!inputQuadVector(vec)) continue;
+			if(!inputFourVector(vec)) continue;
 		}
 		else if(selection==2){
 			std::cout << "Please enter five numbers:" << std::endl;
-			if(!inputQuadVector(vec)) continue;
+			if(!inputFourVector(vec)) continue;
 			if(!inputNumber(vz)) continue;
 		}
 		else{	// User introduced rubbish
