@@ -233,6 +233,19 @@ bool swap(int& a, int& b){
 }
 
 /**
+ * Swap two Particle
+ * Params: a,b: Particle to swap
+ * Return: true if no error happened
+ */
+/*bool swap(Particle *a, Particle *b){
+	Particle* c = &a;
+	std::cout << a << " " << b << std::endl;
+	&a = &b;
+	&b = &c;
+	return true;
+}*/
+
+/**
  * Bubble sort algorithm
  * Params: size: Number of elements in the array
  *         arr: reference to array to sort
@@ -245,6 +258,26 @@ bool bubbleSort(int size, double *arr){
 		for(int i=0; i<size-1; ++i){
 			if(arr[i]<arr[i+1]){
 				swap(arr[i],arr[i+1]);
+				++count;
+			}
+		}
+	}
+	return true;
+}
+
+/**
+ * Bubble sort algorithm
+ * Params: size: Number of elements in the array
+ *         arr: reference to array to sort
+ * Return: true if no error happened
+ */
+bool bubbleSort(int size, Particle* *arr){
+	int count = -1;
+	while(count!=0){	//Loop until number of swap == 0
+		count = 0;
+		for(int i=0; i<size-1; ++i){
+			if(arr[i]->getMass()<arr[i+1]->getMass()){
+				std::swap(arr[i],arr[i+1]);
 				++count;
 			}
 		}
@@ -353,32 +386,11 @@ bool gauss(double &rnd, double mu, double sigma) {
  *         sigma: standard deviation of the generated particle mass
  * Return: true if no error occured
  */
-bool generateEvent(double (&vMass)[100], double (&vP)[100][3], double (&vE)[100],double mass, double sigma) {
-	double rMass;
-	double px,py,pz;
-	double energy;
-	double pmag,dxdz,dydz;
-	double unitLength;
+bool generateEvent(Particle (&vP)[100],double mass, double sigma) {
+	FourVector p;
 
 	for(int i=0; i<100; ++i){
-		gauss(rMass, mass, sigma);
-
-		flat(pmag, 3,75);
-		flat(dxdz, 0, 0.5);
-		flat(dydz, 0, 0.5);
-		magVector3(unitLength, dxdz, dydz, 1.0);
-
-		px = dxdz*(pmag/unitLength);
-		py = dydz*(pmag/unitLength);
-		pz = pmag/unitLength;
-
-		energy = sqrt(rMass*rMass + pmag*pmag);
-
-		vMass[i] = rMass;
-		vP[i][0] = px;
-		vP[i][1] = py;
-		vP[i][2] = pz;
-		vE[i] = energy;
+		vP[i] = Particle::generate(mass,sigma,3,75,0.5);
 	}
 
 	return true;

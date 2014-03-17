@@ -18,7 +18,7 @@
 static const int nd3Menu = 2;
 static const std::string d3Menu[nd3Menu] = {"1) Get 4-vector length", "2) Boost 4-vector"};
 
-const double celerity = 3e8;
+const double celerity = 1.;
 
 bool executeday3(){
 	double vz;

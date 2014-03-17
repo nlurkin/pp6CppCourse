@@ -12,6 +12,7 @@
 #include "pp6menu.hpp"
 #include "PP6Math.hpp"
 #include "FileReader.hpp"
+#include "Particle.hpp"
 
 // Module menu definition
 static const int nd2Menu = 2;
@@ -36,18 +37,15 @@ bool checkInput(FileReader& f){
 /**
  * Compute the invariant mass for all possible mu+/mu- combinations
  * Params: nmup: Number of mu+
- *         mup: Array containing mu+ momentums (3 components)
+ *         mup: Array containing mu+ Particle
  *         nmum: Number of mu-
- *         mum: Array containing mu- momentums (3 components)
- *         vInvMass: Reference to an array to store the invariant masses
+ *         mum: Array containing mu- Particle
+ *         vParent: Reference to an array to store the parent particle
  */
-bool combine(int nmup, double mup[][3], int nmum, double mum[][3], double (&vInvMass)[arrSize*arrSize]){
-	double mass;
-
+bool combine(int nmup, Particle *mup[], int nmum, Particle *mum[], Particle *(&vParent)[arrSize*arrSize]){
 	for(int i=0; i<nmup; ++i){
 		for(int j=0; j<nmum; ++j){
-			invMass(mass, muMass, muMass, mup[i], mum[j]);
-			vInvMass[i*nmum + j] = mass;
+			vParent[i*nmum + j] = new Particle(*mup[i], *mum[j]);
 		}
 	}
 	return true;
@@ -64,11 +62,10 @@ bool analyzeData(){
 	double px,py,pz;
 	std::string source;
 
-	double vmpP[arrSize][3];
-	double vmmP[arrSize][3];
+	Particle* vmp[arrSize];
+	Particle* vmm[arrSize];
 	int mpCount=0, mmCount=0;
-	double invMass[arrSize*arrSize];
-	int mIndices[arrSize*arrSize];
+	Particle *parent[arrSize*arrSize];
 
 	// Open the file to be read
 	FileReader f("observedparticles.dat");
@@ -99,9 +96,7 @@ bool analyzeData(){
 					std::cout << "[error] Too many entries for fixed size array (" << arrSize << ")" << std::endl;
 					return false;
 				}
-				vmpP[mpCount][0] = px;
-				vmpP[mpCount][1] = py;
-				vmpP[mpCount][2] = pz;
+				vmp[mpCount] = new Particle(muMass, px, py, pz,mpCount);
 				++mpCount;
 			}
 			else if(pName.compare("mu-")){
@@ -109,26 +104,21 @@ bool analyzeData(){
 					std::cout << "[error] Too many entries for fixed size array (" << arrSize << ")" << std::endl;
 					return false;
 				}
-				vmmP[mmCount][0] = px;
-				vmmP[mmCount][1] = py;
-				vmmP[mmCount][2] = pz;
+				vmm[mmCount] = new Particle(muMass,px,py,pz,mmCount);
 				++mmCount;
 			}
 		}
 	}
 
-	combine(mpCount, vmpP, mmCount, vmmP, invMass);	// Compute invariant mass for all possible combination
-
-	bubbleSortIndex(mpCount*mmCount, invMass, mIndices);	// Sort the invariant masses (and keep track of indices)
+	combine(mpCount, vmp, mmCount, vmm, parent);	// Compute invariant mass for all possible combination
+	
+	bubbleSort(mpCount*mmCount, parent);
 
 	std::cout << "Highest Invariant masses are : " << std::endl;
 	std::cout << "\tInvMass\t\tCombination(mu+,mu-)" << std::endl;
-	int indmp, indmm;
 	for(int i=0; (i<10) && (i<(mpCount*mmCount)); ++i){
-		indmp = int(mIndices[i]/mmCount);
-		indmm = mIndices[i] % mmCount;
 		std::cout.precision(7);
-		std::cout << std::fixed << "\t" << invMass[i] << "\t(" << indmp << "," << indmm << ")" << std::endl;
+		std::cout << std::fixed << "\t" << parent[i]->getMass() << "\t(" << parent[i]->getDaughter(0).getIndex() << "," << parent[i]->getDaughter(1).getIndex() << ")" << std::endl;
 	}
 
 	return true;
@@ -143,25 +133,23 @@ bool analyzeData(){
  * Return: true if no error occured
  */
 bool randomEvents(double& eMean, double& eSigma, double mass, double sigma){
-	double vMass[100];
-	double vP[100][3];
-	double vE[100];
+	Particle vP[100];
 
 	eMean = 0;
 	eSigma = 0;
 
 	//Generate the 100 random events
-	if(!generateEvent(vMass, vP, vE, mass,sigma)) return false;
+	if(!generateEvent(vP, mass,sigma)) return false;
 
 	//Compute the mean energy
 	for(int i=0; i<100;++i){
-		eMean += vE[i];
+		eMean += vP[i].getEnergy();
 	}
 	eMean /= 100.;
 
 	//Compute the standard deviation of the energy
 	for(int i=0; i<100;++i){
-		eSigma += pow(vE[i]-eMean,2);
+		eSigma += pow(vP[i].getEnergy()-eMean,2);
 	}
 	eSigma = sqrt(eSigma/99.);
 
