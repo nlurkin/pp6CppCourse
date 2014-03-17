@@ -1,5 +1,7 @@
 #ifndef PP6CALCULATOR_PP6MATH_HH
 #define PP6CALCULATOR_PP6MATH_HH
+#include <iostream>
+#include "quadVector.hpp"
 
 bool mul(float &c, float a, float b);
 bool div(float &c, float a, float b);
@@ -23,5 +25,7 @@ bool isEq(double a, double b);
 bool flat(double& rnd, double min, double max);
 bool gauss(double& rnd, double mu, double sigma);
 bool generateEvent(double (&vMass)[100], double (&vP)[100][3], double (&vE)[100], double mass, double sigma);
+
+std::ostream& operator<<(std::ostream& stream, const QuadVector& v);
 #endif 
 

@@ -383,3 +383,10 @@ bool generateEvent(double (&vMass)[100], double (&vP)[100][3], double (&vE)[100]
 
 	return true;
 }
+
+std::ostream& operator<<(std::ostream& stream, const QuadVector& v){
+	stream << "(" << v.getT() << "," << v.getX() << "," << v.getY() << "," << v.getZ() << ")";
+
+	return stream;
+}
+

@@ -45,3 +45,18 @@ bool inputNumber(float &number){
 	}
 	return true;
 }
+
+/**
+ * Wait for a number in cin. Print an error message if the input is not a number.
+ * Params: number
+ * Return: true if input can be parsed as float
+ */
+bool inputNumber(double &number){
+	std::cin >> number;
+	if(!std::cin){
+		std::cout << "There is a problem with your input" << std::endl;
+		return false;
+	}
+	return true;
+}
+

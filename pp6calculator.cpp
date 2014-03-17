@@ -3,11 +3,12 @@
 
 #include "day1.hpp"
 #include "day2.hpp"
+#include "day3.hpp"
 #include "pp6menu.hpp"
 
 
-static const int nTopMenu = 2;
-static const std::string topMenu[nTopMenu] = {"1) Day 1", "2) Day 2"};
+static const int nTopMenu = 3;
+static const std::string topMenu[nTopMenu] = {"1) Day 1", "2) Day 2", "3) Day 3"};
 
 int main(){
 	int selection;
@@ -22,6 +23,9 @@ int main(){
 			break;
 		case 2:
 			if(executeday2()) return 0;
+			break;
+		case 3:
+			if(executeday3()) return 0;
 			break;
 		case -2:
 			return true;

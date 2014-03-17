@@ -12,7 +12,7 @@ include_directories(FileReader)
 add_subdirectory(PP6Lib)
 add_subdirectory(FileReader)
 
-add_executable(pp6calculator pp6calculator.cpp pp6menu.cpp day1.cpp day2.cpp)
+add_executable(pp6calculator pp6calculator.cpp pp6menu.cpp day1.cpp day2.cpp day3.cpp)
 
 target_link_libraries(pp6calculator pp6lib FileReader)
 

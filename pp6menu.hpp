@@ -5,5 +5,6 @@
 
 bool printAndRequestTopMenu(const std::string menuTitle, const std::string menu[], const int size, bool isSubMenu, int& select);
 bool inputNumber(float &number);
+bool inputNumber(double &number);
 
 #endif
