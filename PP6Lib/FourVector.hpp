@@ -1,6 +1,7 @@
 #ifndef FOURVECTOR_HPP
 #define FOURVECTOR_HPP
 #include <iostream>
+#include "ThreeVector.hpp"
 
 extern const double celerity;
 
@@ -8,9 +9,9 @@ class FourVector{
 public:
 	enum CausalType {kSPACELIKE, kTIMELIKE, kNULL};
 
-	FourVector():fX(0),fY(0),fZ(0),fT(0){};
+	FourVector():fSpace(),fT(0){};
 	FourVector(double x, double y, double z, double t);
-	FourVector(const FourVector& v):fX(v.fX),fY(v.fY),fZ(v.fZ),fT(v.fT),fLength(v.fLength){};
+	FourVector(const FourVector& v):fSpace(v.fSpace),fT(v.fT),fLength(v.fLength){};
 
 	~FourVector(){};
 	
@@ -19,9 +20,9 @@ public:
 	double getLength() const{ return fLength;};
 	CausalType getType() const;
 
-	double getX() const { return fX;};
-	double getY() const { return fY;};
-	double getZ() const { return fZ;};
+	double getX() const { return fSpace.getX();};
+	double getY() const { return fSpace.getY();};
+	double getZ() const { return fSpace.getZ();};
 	double getT() const;
 
 	FourVector& operator+=(const FourVector& rhs);
@@ -30,7 +31,8 @@ public:
 private:
 	void computeLength();
 
-	double fX,fY,fZ,fT;
+	ThreeVector fSpace;
+	double fT;
 	double fLength;
 };
 
