@@ -40,3 +40,14 @@ double QuadVector::getT() const{
 	return fT/celerity;
 }
 
+std::ostream& operator<<(std::ostream& stream, const QuadVector& v){
+	stream << "(" << v.getT() << "," << v.getX() << "," << v.getY() << "," << v.getZ() << ")";
+	return stream;
+}
+
+std::istream& operator>>(std::istream& stream, QuadVector& v){
+	double x,y,z,t;
+	stream >> x >> y >> z >> t;
+	v.setXYZT(x,y,z,t);
+	return stream;
+}

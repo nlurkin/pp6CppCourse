@@ -49,10 +49,24 @@ bool inputNumber(float &number){
 /**
  * Wait for a number in cin. Print an error message if the input is not a number.
  * Params: number
- * Return: true if input can be parsed as float
+ * Return: true if input can be parsed as double
  */
 bool inputNumber(double &number){
 	std::cin >> number;
+	if(!std::cin){
+		std::cout << "There is a problem with your input" << std::endl;
+		return false;
+	}
+	return true;
+}
+
+/**
+ * Wait for 4 numbers in cin. Print an error message if the input is not valid.
+ * Params: QuadVector v
+ * Return: true if 4 inputs can be parsed as double
+ */
+bool inputQuadVector(QuadVector &v){
+	std::cin >> v;
 	if(!std::cin){
 		std::cout << "There is a problem with your input" << std::endl;
 		return false;

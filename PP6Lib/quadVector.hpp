@@ -3,6 +3,7 @@
 
 #ifndef QUADVECTOR_HPP
 #define QUADVECTOR_HPP
+#include <iostream>
 
 extern const double celerity;
 
@@ -32,4 +33,6 @@ private:
 	double fLength;
 };
 
+std::ostream& operator<<(std::ostream& stream, const QuadVector& v);
+std::istream& operator>>(std::istream& stream, QuadVector& v);
 #endif

@@ -21,7 +21,6 @@ static const std::string d3Menu[nd3Menu] = {"1) Get 4-vector length", "2) Boost 
 const double celerity = 3e8;
 
 bool executeday3(){
-	double v4[4];
 	double vz;
 	QuadVector vec;
 	int selection;
@@ -36,17 +35,11 @@ bool executeday3(){
 		if(selection<0){}
 		else if(selection==1){
 			std::cout << "Please enter four numbers:" << std::endl;
-			if(!inputNumber(v4[0])) continue;
-			if(!inputNumber(v4[1])) continue;
-			if(!inputNumber(v4[2])) continue;
-			if(!inputNumber(v4[3])) continue;
+			if(!inputQuadVector(vec)) continue;
 		}
 		else if(selection==2){
 			std::cout << "Please enter five numbers:" << std::endl;
-			if(!inputNumber(v4[0])) continue;
-			if(!inputNumber(v4[1])) continue;
-			if(!inputNumber(v4[2])) continue;
-			if(!inputNumber(v4[3])) continue;
+			if(!inputQuadVector(vec)) continue;
 			if(!inputNumber(vz)) continue;
 		}
 		else{	// User introduced rubbish
@@ -57,11 +50,9 @@ bool executeday3(){
 		//Select the correct operation
 		switch(selection){
 		case 1:
-			vec.setXYZT(v4[0],v4[1],v4[2],v4[3]);
 			std::cout << "The 4-vector length is " << vec.getLength() << " and is of type " << vec.getType() << std::endl;
 			break;
 		case 2:
-			vec.setXYZT(v4[0],v4[1],v4[2],v4[3]);
 			vec.boostZ(vz);
 			std::cout << "The boosted 4-vector is " << vec << std::endl;
 			break;

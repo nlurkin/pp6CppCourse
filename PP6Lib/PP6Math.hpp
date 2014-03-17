@@ -26,6 +26,5 @@ bool flat(double& rnd, double min, double max);
 bool gauss(double& rnd, double mu, double sigma);
 bool generateEvent(double (&vMass)[100], double (&vP)[100][3], double (&vE)[100], double mass, double sigma);
 
-std::ostream& operator<<(std::ostream& stream, const QuadVector& v);
 #endif 
 
