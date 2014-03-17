@@ -26,6 +26,10 @@ public:
 	double getY() const { return fY;};
 	double getZ() const { return fZ;};
 	double getT() const;
+
+	QuadVector& operator+=(const QuadVector& rhs);
+	QuadVector& operator-=(const QuadVector& rhs);
+	QuadVector& operator=(const QuadVector& rhs);
 private:
 	void computeLength();
 
@@ -35,4 +39,7 @@ private:
 
 std::ostream& operator<<(std::ostream& stream, const QuadVector& v);
 std::istream& operator>>(std::istream& stream, QuadVector& v);
+
+QuadVector operator+(const QuadVector& v1, const QuadVector& v2);
+QuadVector operator-(const QuadVector& v1, const QuadVector& v2);
 #endif

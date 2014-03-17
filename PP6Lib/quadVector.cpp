@@ -51,3 +51,45 @@ std::istream& operator>>(std::istream& stream, QuadVector& v){
 	v.setXYZT(x,y,z,t);
 	return stream;
 }
+
+QuadVector& QuadVector::operator+=(const QuadVector& rhs){
+	fX+= rhs.fX;
+	fY+= rhs.fY;
+	fZ+= rhs.fZ;
+	fT+= rhs.fT;
+
+	computeLength();
+	return *this;
+}
+
+QuadVector& QuadVector::operator-=(const QuadVector& rhs){
+	fX-= rhs.fX;
+	fY-= rhs.fY;
+	fZ-= rhs.fZ;
+	fT-= rhs.fT;
+
+	computeLength();
+	return *this;
+}
+
+QuadVector& QuadVector::operator=(const QuadVector& rhs){
+	if(&rhs==this) return *this;
+	fX = rhs.fX;
+	fY = rhs.fY;
+	fZ = rhs.fZ;
+	fT = rhs.fT;
+	fLength = rhs.fLength;
+	return *this;
+}
+
+QuadVector operator+(const QuadVector& lhs, const QuadVector& rhs){
+	QuadVector r(lhs);
+	r+= rhs;
+	return r;
+}
+
+QuadVector operator-(const QuadVector& lhs, const QuadVector& rhs){
+	QuadVector r(lhs);
+	r-= rhs;
+	return r;
+}
