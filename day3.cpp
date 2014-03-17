@@ -30,7 +30,6 @@ bool executeday3(){
 		//Print menu and wait for user input
 		if(!printAndRequestTopMenu("Day 3 Menu: ", d3Menu, nd3Menu, true, selection)) continue;
 
-
 		// How many input do we request to the user
 		if(selection<0){}
 		else if(selection==1){

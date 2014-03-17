@@ -3,6 +3,15 @@
 
 #include "pp6menu.hpp"
 
+/**
+ * Print the provided menu and wait for the user choice.
+ * Params: menuTitle: Displayed title of the menu
+ *         menu: Array of string describing the choices
+ *         size: Number of choices to display
+ *         isSubMenu: If true, display the "Go back one level" option
+ *         select: Option selected by the user
+ * Return: True if the user selected a valid option
+ */
 bool printAndRequestTopMenu(const std::string menuTitle, const std::string menu[], const int size, bool isSubMenu, int& select){
 	int value;
 	std::string menuOp;

@@ -2,6 +2,9 @@
 #define THREEVECTOR_HPP
 #include <iostream>
 
+/**
+ * Class representing a 3-vector (3 space components)
+ */
 class ThreeVector{
 public:
 	enum CausalType {kSPACELIKE, kTIMELIKE, kNULL};

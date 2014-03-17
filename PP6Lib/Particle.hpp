@@ -2,6 +2,10 @@
 #define PARTICLE_HPP
 
 #include "FourVector.hpp"
+
+/**
+ * Class representing a particle.
+ */
 class Particle{
 public:
 	Particle();
@@ -19,7 +23,6 @@ public:
 	int getIndex() const { return fIndex;};
 
 	Particle& operator=(const Particle& rhs);
-	//Particle& operator=(const Particle *rhs);
 private:
 	FourVector fP;
 	Particle *fDaughter1, *fDaughter2;

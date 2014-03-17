@@ -5,6 +5,9 @@
 
 extern const double celerity;
 
+/**
+ * Class representing a 4-vector (1 time component and 3 space components)
+ */
 class FourVector{
 public:
 	enum CausalType {kSPACELIKE, kTIMELIKE, kNULL};
@@ -17,6 +20,7 @@ public:
 	
 	void setXYZT(double x, double y, double z, double t);
 	void boostZ(double v);
+	
 	double getLength() const{ return fLength;};
 	CausalType getType() const;
 
