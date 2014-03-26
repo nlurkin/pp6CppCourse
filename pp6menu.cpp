@@ -83,3 +83,15 @@ bool inputFourVector(FourVector &v){
 	return true;
 }
 
+/**
+ * Check if an error occured while reading the input file.
+ * Params: f: reader processing the file
+ * Return: true if no error detected, false otherwise
+ */
+bool checkInput(FileReader& f){
+	if(f.inputFailed()){
+		std::cout << "[error] A problem occurred while reading the input file." << std::endl;
+		return false;
+	}
+	return true;
+}

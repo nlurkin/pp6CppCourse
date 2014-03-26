@@ -22,19 +22,6 @@ static const int arrSize = 500; // Max array size for muon container (setting th
 static const double muMass = 105.6583715; // Mass of the muon (assuming momenta from input files in MeV/c^2)
 
 /**
- * Check if an error occured while reading the input file.
- * Params: f: reader processing the file
- * Return: true if no error detected, false otherwise
- */
-bool checkInput(FileReader& f){
-	if(f.inputFailed()){
-		std::cout << "[error] A problem occurred while reading the input file." << std::endl;
-		return false;
-	}
-	return true;
-}
-
-/**
  * Compute the invariant mass for all possible mu+/mu- combinations
  * Params: nmup: Number of mu+
  *         mup: Array containing mu+ Particle
@@ -91,7 +78,7 @@ bool analyzeData(){
 		source = f.getFieldAsString(6);
 
 		if(source.compare("run4.dat")==0){
-			if(pName.compare("mu+")){
+			if(pName.compare("mu+")==0){
 				if(mpCount>=arrSize){	// Check if we are not going out of bounds
 					std::cout << "[error] Too many entries for fixed size array (" << arrSize << ")" << std::endl;
 					return false;
@@ -99,7 +86,7 @@ bool analyzeData(){
 				vmp[mpCount] = new Particle(muMass, px, py, pz,mpCount);
 				++mpCount;
 			}
-			else if(pName.compare("mu-")){
+			else if(pName.compare("mu-")==0){
 				if(mmCount>=arrSize){	// Check if we are not going out of bounds
 					std::cout << "[error] Too many entries for fixed size array (" << arrSize << ")" << std::endl;
 					return false;
@@ -114,6 +101,7 @@ bool analyzeData(){
 	
 	bubbleSort(mpCount*mmCount, parent);
 
+	std::cout << "Number of combinations: " << mpCount*mmCount << "(" << mpCount << "*" << mmCount << ")" << std::endl;
 	std::cout << "Highest Invariant masses are : " << std::endl;
 	std::cout << "\tInvMass\t\tCombination(mu+,mu-)" << std::endl;
 	for(int i=0; (i<10) && (i<(mpCount*mmCount)); ++i){

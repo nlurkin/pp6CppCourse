@@ -18,11 +18,12 @@ public:
 	void setP(const FourVector& p) { fP=p;};
 
 	double getEnergy() const { return fP.getT();};
-	Particle getDaughter(int ind);
+	Particle getDaughter(int ind) const;
 	double getMass() const { return fP.getLength();};
 	int getIndex() const { return fIndex;};
 
 	Particle& operator=(const Particle& rhs);
+
 private:
 	FourVector fP;
 	Particle *fDaughter1, *fDaughter2;

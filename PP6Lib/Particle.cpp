@@ -90,7 +90,7 @@ Particle Particle::generate(double mass, double sigma, double pmin, double pmax,
  * Params: index: 0 or 1. To get the first or second daughter particle.
  * Return: The daughter particle if exist. A blank particle if not.
  */
-Particle Particle::getDaughter(int index){
+Particle Particle::getDaughter(int index) const{
 	if(index==0) return *fDaughter1;
 	else if(index==1) return *fDaughter2;
 	else return Particle();
@@ -113,4 +113,3 @@ Particle& Particle::operator=(const Particle& rhs){
 	fIndex = rhs.fIndex;
 	return *this;
 }
-
